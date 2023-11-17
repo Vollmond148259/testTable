@@ -15,6 +15,7 @@ function Table(props) {
   return (
     <TableRoot>
       <DataGrid
+        disableColumnMenu
         getRowId={(row) => row.name}
         rows={rows}
         columns={TABLE_COLUMNS_SETTINGS}
