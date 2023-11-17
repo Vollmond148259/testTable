@@ -1,7 +1,6 @@
-import React, { useLayoutEffect, useEffect } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import styled from "@emotion/styled";
-import isEmpty from "lodash/isEmpty";
 import get from "lodash/get";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -33,14 +32,6 @@ function TablePage() {
   );
   const searchText = useSelector((state) => searchTextSelector(state));
   const debouncedSearchText = useDebounce(searchText, 1000);
-
-  useLayoutEffect(() => {
-    dispatch(startLoading());
-    axios.get(" http://universities.hipolabs.com/search").then((response) => {
-      dispatch(endLoading());
-      dispatch(setUniversities(response.data));
-    });
-  }, []);
 
   useEffect(() => {
     dispatch(startLoading());

@@ -6,5 +6,8 @@ export const TABLE_COLUMNS_SETTINGS = [
     field: "web_pages",
     headerName: "web link",
     width: 180,
+    renderCell: (params) => {
+      return <a href={params.value[0]}>{params.value}</a>;
+    },
   },
 ];
