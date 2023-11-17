@@ -31,7 +31,7 @@ function TablePage() {
 
   useLayoutEffect(() => {
     axios
-      .get(" https://universities.hipolabs.com/search")
+      .get(" http://universities.hipolabs.com/search")
       .then((response) => dispatch(setUniversities(response.data)));
   }, []);
 
@@ -39,7 +39,7 @@ function TablePage() {
     if (!isEmpty(debouncedSearchText) || !isEmpty(countrySelect)) {
       const countrySelectLabel = get(countrySelect, "label", "");
       axios
-        .get(" https://universities.hipolabs.com/search", {
+        .get(" http://universities.hipolabs.com/search", {
           params: {
             name: debouncedSearchText || null,
             country: countrySelectLabel,
