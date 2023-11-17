@@ -1,8 +1,9 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   setSearchText,
   setCountrySelected,
+  searchTextSelector,
 } from "../../slices/universitiesSlice";
 import { autoCompleteItems } from "./searchSection/constants";
 
@@ -15,15 +16,29 @@ const SearchSectionRoot = styled(Stack)({
   margin: "10px",
 });
 
+const allowStartWhitespace = (searchWord) => {
+  if (searchWord[0] === " ") {
+    return searchWord.trim();
+  }
+  return searchWord;
+};
+
 function SearchSection() {
   const dispatch = useDispatch();
+  const searchText = useSelector((state) => searchTextSelector(state));
+
+  const changeWithoutSpace = (word) => {
+    const trimWord = allowStartWhitespace(word);
+    dispatch(setSearchText(trimWord));
+  };
+
   return (
     <SearchSectionRoot direction="row" gap="20px">
       <SearchField
         label={"Search"}
-        onChange={(e) => {
-          dispatch(setSearchText(e.target.value));
-        }}
+        value={searchText}
+        size={"small"}
+        onChange={(e) => changeWithoutSpace(e.target.value)}
       />
       <AutoCompleteField
         onChange={(event, newValue) => {

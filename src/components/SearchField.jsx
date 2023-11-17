@@ -31,10 +31,15 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 }));
 
 function SearchField(props) {
-  const { label, onChange } = props;
+  const { label, onChange, value, ...restProps } = props;
   return (
     <SearchFieldRoot>
-      <StyledTextField label={label} size={"small"} onChange={onChange} />
+      <StyledTextField
+        label={label}
+        value={value}
+        onChange={onChange}
+        {...restProps}
+      />
     </SearchFieldRoot>
   );
 }
