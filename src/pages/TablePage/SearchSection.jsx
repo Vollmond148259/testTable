@@ -5,7 +5,7 @@ import {
   setCountrySelected,
   searchTextSelector,
 } from "../../slices/universitiesSlice";
-import { autoCompleteItems } from "./searchSection/constants";
+import { AUTOCOMPLETE_ITEMS } from "./searchSection/constants";
 
 import AutoCompleteField from "../../components/AutoCompleteField";
 import SearchField from "../../components/SearchField";
@@ -44,7 +44,7 @@ function SearchSection() {
         onChange={(event, newValue) => {
           dispatch(setCountrySelected(newValue));
         }}
-        items={autoCompleteItems}
+        items={AUTOCOMPLETE_ITEMS}
       />
     </SearchSectionRoot>
   );

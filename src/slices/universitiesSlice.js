@@ -4,11 +4,13 @@ export const universitiesSelector = (state) => state.universities.universities;
 export const searchTextSelector = (state) => state.universities.searchText;
 export const countrySelectedSelector = (state) =>
   state.universities.countrySelected;
+export const isLoadingSelector = (state) => state.universities.isLoading;
 
 const initialState = {
   universities: [],
   searchText: "",
   countrySelected: "",
+  isLoading: false,
 };
 
 const slice = createSlice({
@@ -27,6 +29,12 @@ const slice = createSlice({
     setCountrySelected: (state, action) => {
       state.countrySelected = action.payload;
     },
+    startLoading: (state) => {
+      state.isLoading = true;
+    },
+    endLoading: (state) => {
+      state.isLoading = false;
+    },
   },
 });
 export const {
@@ -34,6 +42,8 @@ export const {
   setCountrySelected,
   setSearchText,
   setUniversities,
+  startLoading,
+  endLoading,
 } = slice.actions;
 
 export default slice.reducer;

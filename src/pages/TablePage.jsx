@@ -11,10 +11,14 @@ import {
   universitiesSelector,
   searchTextSelector,
   countrySelectedSelector,
+  isLoadingSelector,
+  endLoading,
+  startLoading,
 } from "../slices/universitiesSlice";
 import Table from "../components/Table";
 import { Box } from "@mui/material";
 import SearchSection from "./TablePage/SearchSection";
+import CurcularLoader from "../components/CurcularLoader";
 
 const TablePageRoot = styled(Box)({
   marginTop: "20px",
@@ -22,6 +26,7 @@ const TablePageRoot = styled(Box)({
 
 function TablePage() {
   const dispatch = useDispatch();
+  const isLoading = useSelector((state) => isLoadingSelector(state));
   const countrySelect = useSelector((state) => countrySelectedSelector(state));
   const universitiesCollection = useSelector((state) =>
     universitiesSelector(state)
@@ -30,26 +35,32 @@ function TablePage() {
   const debouncedSearchText = useDebounce(searchText, 1000);
 
   useLayoutEffect(() => {
-    axios
-      .get(" http://universities.hipolabs.com/search")
-      .then((response) => dispatch(setUniversities(response.data)));
+    dispatch(startLoading());
+    axios.get(" http://universities.hipolabs.com/search").then((response) => {
+      dispatch(endLoading());
+      dispatch(setUniversities(response.data));
+    });
   }, []);
 
   useEffect(() => {
-    if (!isEmpty(debouncedSearchText) || !isEmpty(countrySelect)) {
-      const countrySelectLabel = get(countrySelect, "label", "");
-      axios
-        .get(" http://universities.hipolabs.com/search", {
-          params: {
-            name: debouncedSearchText || null,
-            country: countrySelectLabel,
-          },
-        })
-        .then((response) => dispatch(setUniversities(response.data)));
-    }
+    dispatch(startLoading());
+    const countrySelectLabel = get(countrySelect, "label", "");
+    axios
+      .get(" http://universities.hipolabs.com/search", {
+        params: {
+          name: debouncedSearchText || null,
+          country: countrySelectLabel || null,
+        },
+      })
+      .then((response) => {
+        dispatch(endLoading());
+        dispatch(setUniversities(response.data));
+      });
   }, [debouncedSearchText, countrySelect]);
+
   return (
     <TablePageRoot>
+      <CurcularLoader isVisible={isLoading} />
       <SearchSection />
       <Table rows={universitiesCollection} />
     </TablePageRoot>
